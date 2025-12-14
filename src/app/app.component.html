@@ -1,0 +1,95 @@
+<ion-app *ngIf="logged">
+  <ion-router-outlet id="main-content"></ion-router-outlet>
+  <ion-tabs *ngIf="logged">
+    <ion-tab-bar slot="bottom">
+      <ion-tab-button tab="home">
+        <ion-icon name="home"></ion-icon>
+        <ion-label>Home</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button tab="list">
+        <ion-icon name="list"></ion-icon>
+        <ion-label>List</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button tab="setting">
+        <ion-icon name="settings"></ion-icon>
+        <ion-label>Settings</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button tab="pasta">
+        <ion-icon name="fast-food"></ion-icon>
+        <ion-label>Pasta</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+</ion-app>
+
+<ion-content *ngIf="!logged" class="login-page">
+  <ion-grid fixed>
+    <ion-row
+      class="ion-justify-content-center ion-align-items-center full-height"
+    >
+      <ion-col size="12" size-md="6">
+        <div class="login-container ion-padding">
+          <div class="header">
+            <h1>Welcome!</h1>
+            <p>Login to unlock the full potential of the app</p>
+          </div>
+
+          <form (ngSubmit)="login()">
+            <!-- Email -->
+            <ion-item class="input-item" lines="none">
+                <ion-icon slot="start" name="mail-outline"></ion-icon>
+
+              <ion-input
+                labelPlacement="stacked"
+                label="Email"
+                placeholder="email@domain.com"
+                type="email"
+                [(ngModel)]="email"
+                name="email"
+                required
+              >
+              </ion-input>
+            </ion-item>
+
+            <!-- Password -->
+            <ion-item class="input-item" lines="none">
+                <ion-icon slot="start" name="lock-closed"></ion-icon>
+
+              <ion-input
+                labelPlacement="stacked"
+                label="Kata Sandi"
+                placeholder="Masukkan kata sandi Anda"
+                type="password"
+                [(ngModel)]="pass"
+                name="password"
+                required
+              >
+                <ion-input-password-toggle
+                  slot="end"
+                ></ion-input-password-toggle>
+              </ion-input>
+            </ion-item>
+
+            <ion-button expand="block" class="login-btn" type="submit">
+              Login
+            </ion-button>
+          </form>
+
+          <div class="signup-link">
+            <span>Don't have an account?</span>
+            <a routerLink="/signup">Sign Up</a>
+          </div>
+
+          <div class="terms">
+            <p>
+              By continuing, I accept the Terms and Conditions & Privacy Policy
+            </p>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
