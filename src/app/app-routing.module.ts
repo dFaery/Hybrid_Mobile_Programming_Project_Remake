@@ -11,6 +11,22 @@ const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full'
   },
+  {
+    path: 'semua-berita',
+    loadChildren: () => import('./semua-berita/semua-berita.module').then( m => m.SemuaBeritaPageModule)
+  },
+  {
+    path: 'detil-berita/:idBerita',
+    loadChildren: () => import('./detil-berita/detil-berita.module').then( m => m.DetilBeritaPageModule)
+  },
+  {
+    path: 'favorit-berita',
+    loadChildren: () => import('./favorit-berita/favorit-berita.module').then( m => m.FavoritBeritaPageModule)
+  },
+  {
+    path: 'kelola-akun',
+    loadChildren: () => import('./kelola-akun/kelola-akun.module').then( m => m.KelolaAkunPageModule)
+  },
 ];
 
 @NgModule({

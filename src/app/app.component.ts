@@ -16,20 +16,33 @@ export class AppComponent {
   }
 
   login() {
-    const userLog = this.objAkun.login(this.email, this.pass);
-    if(userLog){
-      alert("Berhasil Login");
-      this.logged = userLog;
-    }
-    else {
-      alert("Gagal Login");
-      this.logged = null;
-    }
+    this.objAkun.login(this.email, this.pass).subscribe((respon:any)=>{
+      if(respon.result === "success"){
+        this.logged = {
+          accountEmail: respon.email,
+          accountPass: respon.password,
+          accountNama: respon.nama,
+          accountGender: respon.gender,
+          accountAlamat: respon.alamat,
+          accountTanggalLahir: respon.tanggal_lahir,
+          accountFotoProfil: respon.foto
+        };  
+
+        alert("Berhasil Login");
+        localStorage.setItem('logged', JSON.stringify(this.logged));
+      }
+      else {
+        alert("Gagal Login");
+        this.logged = null;
+      }
+    });
   }
   
   logout() {
-    this.objAkun.logout;
+    this.email = "";
+    this.pass = "";
     this.logged = null;
+    localStorage.removeItem('logged');
   }
 
 

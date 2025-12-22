@@ -1,112 +1,57 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 export interface Akun {
   accountEmail: string;
   accountPass: string;
-  biodata: {
-    namaDepan: string;
-    namaBelakang: string;
-    gender: string;
-    jabatan: string;
-    alamat: string;
-    telepon: string;
-    tanggalLahir: string;
-    lokasi: string;
-    kodePos: string;
-    fotoProfil: string;
-  };
+  accountNama: string;
+  accountGender: string;
+  accountAlamat: string;
+  accountTanggalLahir: string;
+  accountFotoProfil: string;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class AkunService {
-  private accounts: Akun[] = [
-    {
-      accountEmail: 'thia@gmail.com',
-      accountPass: 'thia',
-      biodata: {
-        namaDepan: 'Thia',
-        namaBelakang: 'Aurelia',
-        gender: 'Female',
-        jabatan: 'Kasir',
-        alamat: 'Jl. Melati No. 10, Bandung',
-        telepon: '(022) 555-0101',
-        tanggalLahir: '2001-04-25',
-        lokasi: 'Bandung, Indonesia',
-        kodePos: '40123',
-        fotoProfil: 'assets/avatar-thia.jpeg',
-      },
-    },
-    {
-      accountEmail: 'hans@gmail.com',
-      accountPass: 'hans',
-      biodata: {
-        namaDepan: 'Hans',
-        namaBelakang: 'Kristofer',
-        gender: 'Male',
-        jabatan: 'Kasir',
-        alamat: 'Jl. Merdeka No. 12, Jakarta',
-        telepon: '(021) 555-0123',
-        tanggalLahir: '1999-09-10',
-        lokasi: 'Jakarta, Indonesia',
-        kodePos: '10210',
-        fotoProfil: 'assets/avatar-hans.jpeg',
-      },
-    },
-    {
-      accountEmail: 'kevin@gmail.com',
-      accountPass: 'kevin',
-      biodata: {
-        namaDepan: 'Kevin',
-        namaBelakang: 'Santoso',
-        gender: 'Male',
-        jabatan: 'Kasir',
-        alamat: 'Jl. Diponegoro No. 5, Surabaya',
-        telepon: '(031) 555-0108',
-        tanggalLahir: '2000-02-12',
-        lokasi: 'Surabaya, Indonesia',
-        kodePos: '60234',
-        fotoProfil: 'assets/avatar-kevin.jpeg',
-      },
-    },
-    {
-      accountEmail: 'hendra@gmail.com',
-      accountPass: 'hendra',
-      biodata: {
-        namaDepan: 'Hendra',
-        namaBelakang: 'Wijaya',
-        gender: 'Male',
-        jabatan: 'Kasir',
-        alamat: 'Jl. Gatot Subroto No. 99, Medan',
-        telepon: '(061) 555-0188',
-        tanggalLahir: '1998-07-20',
-        lokasi: 'Medan, Indonesia',
-        kodePos: '20111',
-        fotoProfil: 'assets/avatar-hendra.jpeg',
-      },
-    },
-  ];
+  url = "https://ubaya.cloud/hybrid/160423183/project.php";
 
-  private loggedInUser: Akun | null = null;
+  constructor(private http: HttpClient) { }
 
-  constructor() { }
+  login(email: string, pass: string): Observable<any>{
+    const headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
+    const body = new URLSearchParams();
+    body.set('action', "login"); 
+    body.set('email', email);
+    body.set('pass', pass); 
+    const urlEncodedData = body.toString();
 
-  login(email: string, pass: string): Akun | null {
-    const found = this.accounts.find(
-      (acc) => acc.accountEmail === email && acc.accountPass === pass
-    );
-    if (found) {
-      this.loggedInUser = found;
-      localStorage.setItem('logged', JSON.stringify(found));
-      return found;
-    }
-    return null;
+    return this.http.post(this.url, urlEncodedData, { headers });
   }
 
-  logout(): void {
-    this.loggedInUser = null;
-    localStorage.removeItem('logged');
+  //*jgn tanya knp logout ga ada disini, logout-nya di root (app.component.ts) :v
+  //*semua function default returnnya bertipe observable, ada/tidak ada ":Observable<any>" hasilnya sama aja
+
+  update(updated: Akun){
+    const headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
+    const body = new URLSearchParams();
+    body.set('action', "update"); 
+    body.set('email', updated.accountEmail);
+    body.set('password', updated.accountPass);
+    body.set('nama', updated.accountNama);
+    body.set('gender', updated.accountGender);
+    body.set('alamat', updated.accountAlamat);
+    body.set('tanggal_lahir', updated.accountTanggalLahir);
+    body.set('foto', updated.accountFotoProfil); 
+    const urlEncodedData = body.toString();
+
+    return this.http.post(this.url, urlEncodedData, { headers });
+  }
+
+  register(registerd:Akun){
+    //? sama lah sama update, beda di php aja, action nya 'register'
   }
 
 }
