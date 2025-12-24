@@ -1,13 +1,80 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Berita saya</ion-title>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Berita Saya</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">berita saya</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Daftar Berita Anda</ion-label>
+    </ion-list-header>
+
+    <ion-item-sliding *ngFor="let b of beritaSaya">
+      <ion-item>
+        <ion-thumbnail slot="start">
+          <img [src]="'https://ubaya.cloud/hybrid/160423183/img/' + b.foto" />
+        </ion-thumbnail>
+        <ion-label>
+          <h2>{{ b.judul }}</h2>
+          <p>{{ b.kategori.join(', ') }}</p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item-options side="end">
+        <ion-item-option color="danger" (click)="hapusBerita(b.id)">
+          <ion-icon name="trash" slot="icon-only"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button id="open-modal-tambah">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-modal trigger="open-modal-tambah" #modal>
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Buat Berita Baru</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="modal.dismiss()">Batal</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="ion-padding">
+        <ion-item>
+          <ion-label position="stacked">Judul Berita</ion-label>
+          <ion-input [(ngModel)]="formBerita.judul" placeholder="Masukkan judul"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Deskripsi / Isi Berita</ion-label>
+          <ion-textarea [(ngModel)]="formBerita.deskripsi" rows="4"></ion-textarea>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">URL Foto</ion-label>
+          <ion-input [(ngModel)]="formBerita.foto" placeholder="nama_file.jpg"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Kategori (Pilih banyak)</ion-label>
+          <ion-select [(ngModel)]="formBerita.kategori" multiple="true">
+            <ion-select-option *ngFor="let k of daftarKategori" [value]="k">
+              {{ k | titlecase }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-button expand="block" class="ion-margin-top" (click)="simpanBerita(modal)">
+          Simpan Berita
+        </ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>
