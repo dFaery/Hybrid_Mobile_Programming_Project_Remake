@@ -1,13 +1,49 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>favorit-berita</ion-title>
+    <ion-title>Berita Favorit Saya</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">favorit-berita</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Fitur Favorit Belum Tersedia</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Fitur favorit memerlukan tabel tambahan di database yang belum tersedia.</p>
+      <p><strong>Gunakan fitur lain:</strong></p>
+      <ul>
+        <li><strong>Home</strong> - Lihat semua berita</li>
+        <li><strong>Berita</strong> - Kelola berita Anda sendiri</li>
+        <li><strong>Akun</strong> - Atur profil Anda</li>
+      </ul>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Uncomment code berikut jika sudah menambahkan tabel favorit ke database
+  <ion-list>
+    <ion-item 
+      *ngFor="let berita of favoritBerita" 
+      [routerLink]="['/detil-berita', berita.id]"
+      button>
+      <ion-thumbnail slot="start">
+        <img [src]="'https://ubaya.cloud/hybrid/160423183/img/' + berita.foto" alt="{{ berita.judul }}" />
+      </ion-thumbnail>
+      <ion-label>
+        <h2>{{ berita.judul }}</h2>
+        <p>{{ berita.penerbit }}</p>
+        <ion-note color="medium">
+          <ion-icon name="star" color="warning"></ion-icon>
+          {{ berita.rating || 0 }} ({{ berita.jumlahReview || 0 }} review)
+        </ion-note>
+      </ion-label>
+      <ion-icon name="bookmark" color="primary" slot="end"></ion-icon>
+    </ion-item>
+  </ion-list>
+
+  <div *ngIf="favoritBerita.length === 0" class="ion-text-center ion-padding">
+    <ion-icon name="bookmarks-outline" style="font-size: 64px; color: #ccc;"></ion-icon>
+    <p>Belum ada berita favorit</p>
+  </div>
+  -->
 </ion-content>

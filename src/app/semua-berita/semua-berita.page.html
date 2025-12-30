@@ -65,8 +65,8 @@
         <ion-item>
           <ion-label>Kategori (Pilih banyak)</ion-label>
           <ion-select [(ngModel)]="formBerita.kategori" multiple="true">
-            <ion-select-option *ngFor="let k of daftarKategori" [value]="k">
-              {{ k | titlecase }}
+            <ion-select-option *ngFor="let k of daftarKategori" [value]="k.id">
+              {{ k.nama }}
             </ion-select-option>
           </ion-select>
         </ion-item>

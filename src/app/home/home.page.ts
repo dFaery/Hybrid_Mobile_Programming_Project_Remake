@@ -57,17 +57,29 @@ loadCategories() {
   });
 }
 
+loadAllBerita() {
+  this.beritaservice.getAllBerita().subscribe((response) => {
+    if (response.result === 'OK') {
+      this.semuaBerita = response.data;
+      this.hasilPencarian = [...this.semuaBerita];
+    }
+  });
+}
+
 // Fungsi ini dijalankan saat user mengklik salah satu tab
 pilihKategori(id: any) {
   this.jenisTampilan = id;
   this.beritaservice.getBeritaByKategori(id).subscribe((response) => {
     if (response.result === 'OK') {
       this.semuaBerita = response.data;
+      this.hasilPencarian = [...this.semuaBerita];
     }
   });
 }
 
   ngOnInit() {
   this.loadCategories();
+  this.loadAllBerita();
+  this.jenisTampilan = 0;
 }
 }

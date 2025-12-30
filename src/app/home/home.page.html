@@ -9,6 +9,9 @@
   </ion-searchbar>
 
   <ion-segment class="tabs" [(ngModel)]="jenisTampilan" [scrollable]="true">
+    <ion-segment-button value="0" (click)="loadAllBerita(); jenisTampilan = 0">
+      <ion-label>Semua</ion-label>
+    </ion-segment-button>
     <ion-segment-button 
       *ngFor="let kat of categories" 
       [value]="kat.id" 
@@ -17,3 +20,29 @@
     </ion-segment-button>
   </ion-segment>
 </ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-list>
+    <ion-item 
+      *ngFor="let berita of (jenisTampilan === 0 && beritaDicari ? hasilPencarian : semuaBerita)" 
+      [routerLink]="['/detil-berita', berita.id]"
+      button>
+      <ion-thumbnail slot="start">
+        <img [src]="'https://ubaya.cloud/hybrid/160423183/img/' + berita.foto" alt="{{ berita.judul }}" />
+      </ion-thumbnail>
+      <ion-label>
+        <h2>{{ berita.judul }}</h2>
+        <p>{{ berita.penerbit }}</p>
+        <ion-note color="medium">
+          <ion-icon name="star" color="warning"></ion-icon>
+          {{ berita.rating || 0 }} ({{ berita.jumlahReview || 0 }} review)
+        </ion-note>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <div *ngIf="semuaBerita.length === 0" class="ion-text-center ion-padding">
+    <ion-icon name="newspaper-outline" style="font-size: 64px; color: #ccc;"></ion-icon>
+    <p>Belum ada berita tersedia</p>
+  </div>
+</ion-content>

@@ -92,4 +92,44 @@ export class BeritaserviceService {
 
     return this.http.post(this.url, body.toString(), { headers });
   }
+
+  getBeritaByUser(emailUser: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded',
+    });
+    const body = new URLSearchParams();
+    body.set('action', 'getBeritaByUser');
+    body.set('emailUser', emailUser);
+    const urlEncodedData = body.toString();
+
+    return this.http.post(this.url, urlEncodedData, { headers });
+  }
+
+  tambahBerita(judul: string, deskripsi: string, foto: string, kategori: string[], emailPenerbit: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded',
+    });
+    const body = new URLSearchParams();
+    body.set('action', 'tambahBerita');
+    body.set('judul', judul);
+    body.set('deskripsi', deskripsi);
+    body.set('foto', foto);
+    body.set('kategori', JSON.stringify(kategori));
+    body.set('emailPenerbit', emailPenerbit);
+    const urlEncodedData = body.toString();
+
+    return this.http.post(this.url, urlEncodedData, { headers });
+  }
+
+  hapusBerita(idBerita: number): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded',
+    });
+    const body = new URLSearchParams();
+    body.set('action', 'hapusBerita');
+    body.set('idBerita', idBerita.toString());
+    const urlEncodedData = body.toString();
+
+    return this.http.post(this.url, urlEncodedData, { headers });
+  }
 }
