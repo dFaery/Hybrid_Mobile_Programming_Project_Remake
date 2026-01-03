@@ -26,7 +26,7 @@ export class DetilBeritaPage implements OnInit {
   loadDetailBerita() {
     this.beritaservice.getDetailBerita(this.id).subscribe((res: any) => {
       if (res.result === 'OK') {
-        this.berita = res.data; // Mengambil object berita dari PHP
+        this.berita = res.data; 
       }
     });
   }

@@ -162,13 +162,13 @@ export class BeritaserviceService {
     return this.http.post(this.url, body.toString(), { headers });
   }
 
-  getDetailBerita(idBerita: number): Observable<any> {
+  getDetailBerita(id: number): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/x-www-form-urlencoded',
     });
     const body = new URLSearchParams();
     body.set('action', 'getDetailBerita');
-    body.set('idBerita', idBerita.toString());
+    body.set('id', id.toString());
 
     return this.http.post(this.url, body.toString(), { headers });
   }
