@@ -89,6 +89,19 @@ export class HomePage {
       }
     });
   }
+  prosesHapusKategori(id: any) {
+    // Pastikan Anda sudah membuat fungsi deleteKategori di beritaservice.service.ts
+    this.beritaservice.deleteKategori(id).subscribe((res: any) => {
+      if (res.result === 'OK') {
+        alert('Kategori berhasil dihapus');
+        this.loadCategories(); // Refresh tab agar kategori yang dihapus hilang
+        this.loadAllBerita(); // Reset tampilan ke "Semua"
+        this.jenisTampilan = 0;
+      } else {
+        alert('Gagal menghapus: ' + res.message);
+      }
+    });
+  }
 
   ngOnInit() {
     this.loadCategories();
@@ -118,6 +131,60 @@ export class HomePage {
               this.SimpanKategoriBaru(data.nama_kategori);
             }
           },
+        },
+      ],
+    });
+    await alert.present();
+  }
+
+  async tampilkanPilihanHapus() {
+    // Mapping categories menjadi format input alert
+    const categoryInputs = this.categories.map((kat) => ({
+      name: 'id_kategori',
+      type: 'radio' as const,
+      label: kat.nama,
+      value: kat.id,
+    }));
+
+    const alert = await this.alertController.create({
+      header: 'Hapus Kategori',
+      message: 'Pilih kategori yang ingin dihapus:',
+      inputs: categoryInputs,
+      buttons: [
+        { text: 'Batal', role: 'cancel' },
+        {
+          text: 'Hapus',
+          handler: (idTerpilih) => {
+            if (idTerpilih) {
+              this.prosesHapusKategori(idTerpilih);
+            }
+          },
+        },
+      ],
+    });
+    await alert.present();
+  }
+
+  async menuKategori() {
+    const alert = await this.alertController.create({
+      header: 'Pengaturan Kategori',
+      buttons: [
+        {
+          text: 'Tambah Kategori Baru',
+          handler: () => {
+            this.tambahKategori(); // Memanggil fungsi tambah yang sudah Anda punya
+          },
+        },
+        {
+          text: 'Hapus Kategori',
+          cssClass: 'alert-danger', // Opsional: beri warna merah jika ada CSS-nya
+          handler: () => {
+            this.tampilkanPilihanHapus();
+          },
+        },
+        {
+          text: 'Batal',
+          role: 'cancel',
         },
       ],
     });

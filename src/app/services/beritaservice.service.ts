@@ -173,7 +173,11 @@ export class BeritaserviceService {
     return this.http.post(this.url, body.toString(), { headers });
   }
 
-  updateRating(idBerita: number, ratingBaru: number, rateUserLama: number): Observable<any> {
+  updateRating(
+    idBerita: number,
+    ratingBaru: number,
+    rateUserLama: number
+  ): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/x-www-form-urlencoded',
     });
@@ -187,6 +191,15 @@ export class BeritaserviceService {
     return this.http.post(this.url, body.toString(), { headers });
   }
 
+  deleteKategori(id: any) {
+    const body = new URLSearchParams();
+    body.set('action', 'deleteKategori'); // Sesuaikan dengan yang ada di PHP
+    body.set('id', id);
+
+    const headers = { 'Content-Type': 'application/x-www-form-urlencoded' };
+    return this.http.post(this.url, body.toString(), { headers });
+  }
+
   //fitur tambahan (nambah view ketika melihat beritanya)
   // addView(id: number) {
   //   for (let i = 0; i < this.berita.length; i++) {
@@ -196,6 +209,4 @@ export class BeritaserviceService {
   //     }
   //   }
   // }
-
-  
 }
