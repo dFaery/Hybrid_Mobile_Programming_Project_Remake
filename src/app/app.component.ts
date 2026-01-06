@@ -15,6 +15,8 @@ export class AppComponent {
   alamat: string = '';
   tanggal_lahir: string = '';
   foto: string = '';
+  fotoFile: File = new File([], '');
+  
   logged: Akun | null = null;
   isRegister: boolean = false; //untuk pengecekan kesamaan akun
 
@@ -88,11 +90,11 @@ export class AppComponent {
   }
 
   // buat ambil foto dari regis
-  ambilNamaFoto(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      // ini hanya ambil nama filenya saja (contoh: "profil.jpg")
-      this.foto = file.name;
+  ambilFoto(event: any) {
+    const input = event.target as HTMLInputElement;
+
+    if (input.files && input.files.length > 0) {
+      this.fotoFile = input.files[0];
     }
   }
 
@@ -112,7 +114,7 @@ export class AppComponent {
       accountFotoProfil: this.foto,
     };
 
-    this.objAkun.register(akunBaru).subscribe(
+    this.objAkun.register(akunBaru, this.fotoFile).subscribe(
       (respon: any) => {
         if (respon.status === 'success') {
           alert('Registrasi Berhasil! Silakan Login.');

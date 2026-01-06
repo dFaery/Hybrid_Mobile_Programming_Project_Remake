@@ -144,7 +144,8 @@
                   type="password"
                   [(ngModel)]="pass"
                   name="password"
-                  required
+                  minlength="6"
+                  required 
                 >
                   <ion-input-password-toggle
                     slot="end"
@@ -198,7 +199,7 @@
                 <ion-label position="stacked">Upload Foto Profil</ion-label>
                 <input
                   type="file"
-                  (change)="ambilNamaFoto($event)"
+                  (change)="ambilFoto($event)" 
                   accept="image/*"
                 />
               </ion-item>

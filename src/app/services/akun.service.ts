@@ -50,20 +50,21 @@ export class AkunService {
     return this.http.post(this.url, urlEncodedData, { headers });
   }
 
-  register(registerd:Akun){
-    const headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
-    const body = new URLSearchParams();
-    body.set('action', "register"); 
-    body.set('email', registerd.accountEmail);
-    body.set('password', registerd.accountPass);
-    body.set('nama', registerd.accountNama);
-    body.set('gender', registerd.accountGender);
-    body.set('alamat', registerd.accountAlamat);
-    body.set('tanggal_lahir', registerd.accountTanggalLahir);
-    body.set('foto', registerd.accountFotoProfil); 
-    const urlEncodedData = body.toString();
+  register(registerd:Akun, fotoFile:File){
+    const formData = new FormData();
 
-    return this.http.post(this.url, urlEncodedData, { headers });
+    formData.append('action', 'register');
+    formData.append('email', registerd.accountEmail);
+    formData.append('password', registerd.accountPass);
+    formData.append('nama', registerd.accountNama);
+    formData.append('gender', registerd.accountGender);
+    formData.append('alamat', registerd.accountAlamat);
+    formData.append('tanggal_lahir', registerd.accountTanggalLahir);
+    formData.append('foto', registerd.accountFotoProfil);
+
+    formData.append('fotoFile', fotoFile);
+
+    return this.http.post(this.url, formData);
   }
 
   getDataUser(getData:Akun){

@@ -177,7 +177,6 @@ export class HomePage {
         },
         {
           text: 'Hapus Kategori',
-          cssClass: 'alert-danger', // Opsional: beri warna merah jika ada CSS-nya
           handler: () => {
             this.tampilkanPilihanHapus();
           },
