@@ -16,11 +16,10 @@ export class KelolaAkunPage implements OnInit {
     accountGender: '',
     accountAlamat: '',
     accountTanggalLahir: '',
-    accountFotoProfil: 'default.png',
+    accountFotoProfil: '',
   };
   constructor(
     private root: AppComponent,
-    private router: Router,
     private akunService: AkunService,
     private alertCtrl: AlertController
   ) {}
@@ -36,26 +35,22 @@ export class KelolaAkunPage implements OnInit {
   }
 
   private loadUserData() {
-    const data = localStorage.getItem('user_login');
+    const data = localStorage.getItem('logged');
 
-    if (data && data !== 'undefined' && data !== 'null') {
       try {
-        const user = JSON.parse(data);
+        const user = JSON.parse(data!);
         this.akun = {
-          accountEmail: user.email || '',
-          accountPass: user.password || '',
-          accountNama: user.nama || '',
-          accountGender: user.gender || '',
-          accountAlamat: user.alamat || '',
-          accountTanggalLahir: user.tanggal_lahir || '',
-          accountFotoProfil: user.foto || 'default.png',
+          accountEmail: user.accountEmail || '',
+          accountPass: user.accountPass || '',
+          accountNama: user.accountNama || '',
+          accountGender: user.accountGender || '',
+          accountAlamat: user.accountAlamat || '',
+          accountTanggalLahir: user.accountTanggalLahir || '',
+          accountFotoProfil: user.accountFotoProfil || 'default.png',
         };
       } catch (e) {
         console.error('Gagal parse JSON', e);
       }
-    } else {
-      this.root.isLoginOpen = true;
-    }
   }
 
   discardChanges() {
@@ -64,9 +59,9 @@ export class KelolaAkunPage implements OnInit {
 
   async saveChanges() {
     this.akunService.update(this.akun).subscribe(async (res: any) => {
-      if (res.result === 'success') {
+      if (res.result === 'OK') {
         // Update local storage agar perubahan langsung terlihat di seluruh aplikasi
-        localStorage.setItem('user_login', JSON.stringify(res.user_data));
+        localStorage.setItem('logged', JSON.stringify(this.akun));
 
         const alert = await this.alertCtrl.create({
           header: 'Berhasil',
@@ -74,6 +69,8 @@ export class KelolaAkunPage implements OnInit {
           buttons: ['OK'],
         });
         await alert.present();
+      } else {
+        console.log("ada masalah");
       }
     });
   }

@@ -19,14 +19,14 @@
         style="flex: 1"
       >
         <ion-segment-button value="0" (click)="loadAllBerita()">
-          <ion-label>Semua</ion-label>
+          <ion-label style="color: white">Semua</ion-label>
         </ion-segment-button>
         <ion-segment-button
           *ngFor="let kat of categories"
           [value]="kat.id"
           (click)="pilihKategori(kat.id)"
         >
-          <ion-label>{{ kat.nama }}</ion-label>
+            <ion-label style="color: white">{{ kat.nama }}</ion-label>
         </ion-segment-button>
       </ion-segment>
 
@@ -43,7 +43,7 @@
       *ngFor="let berita of (jenisTampilan === 0 && beritaDicari ? hasilPencarian : semuaBerita)"
       [routerLink]="['/detil-berita', berita.id]"
       button
-    >
+      >
       <ion-thumbnail slot="start">
         <img
           [src]="berita.foto.startsWith('http') ? berita.foto : 'https://ubaya.cloud/hybrid/160423183/img/' + berita.foto"
@@ -56,7 +56,7 @@
         <p>{{ berita.penerbit }}</p>
         <ion-note color="medium">
           <ion-icon name="star" color="warning"></ion-icon>
-          {{ berita.rating || 0 }} ({{ berita.jumlahReview || 0 }} review)
+          {{ berita.rating }} ({{ berita.jumlah_review}} review) {{berita.views}} kali dilihat user
         </ion-note>
       </ion-label>
     </ion-item>

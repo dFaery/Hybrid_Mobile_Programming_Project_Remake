@@ -41,12 +41,12 @@
       <!-- Tombol favorite -->
       <div class="ion-padding-vertical" style="display: flex; align-items: center; gap: 8px">
         <ion-button fill="outline" color="warning" (click)="toggleFavorite()">
-          <ion-icon [name]="isFavorite ? 'bookmark' : 'bookmark-outline'" slot="start"></ion-icon>
-          {{ isFavorite ? 'Hapus dari Favorit' : 'Tambah ke Favorit' }}
+          <ion-icon [name]="berita.is_favorit == 'TRUE' ? 'bookmark' : 'bookmark-outline'" slot="start"></ion-icon>
+          {{ berita.is_favorit == 'TRUE' ? 'Hapus dari Favorit' : 'Tambah ke Favorit' }}
         </ion-button>
         <ion-chip color="medium">
           <ion-icon name="eye-outline"></ion-icon>
-          <ion-label>{{ berita.views || 0 }} views</ion-label>
+          <ion-label>{{ berita.views }} views</ion-label>
         </ion-chip>
       </div>
 
@@ -59,13 +59,13 @@
       <div class="rating-stars" style="margin: 20px 0">
         <ion-icon
           *ngFor="let jum of [1,2,3,4,5]"
-          [name]="jum <= (berita.rating || 0) ? 'star' : 'star-outline'"
+          [name]="jum <= (berita.rating_user) ? 'star' : 'star-outline'"
           color="warning"
           size="large"
           (click)="beriRating(jum)"
         ></ion-icon>
         <p style="font-size: 0.9em; color: #888">
-          Rating: {{ berita.rating }} / 5 ({{ berita.jumlah_review || 0 }} review)
+          Rating: {{ berita.rating }} / 5 ({{ berita.jumlah_review }} review)
         </p>
       </div>
 
@@ -88,14 +88,14 @@
         <ion-list *ngIf="comments.length > 0" color="dark">
           <ion-item *ngFor="let c of comments; let i = index" color="dark">
             <ion-avatar slot="start">
-              <img [src]="c.userPhoto || 'https://ui-avatars.com/api/?name=' + (c.userName || c.userEmail || 'User') + '&background=1e1e1e&color=fff'" />
+              <img [src]="c.userPhoto || 'https://ui-avatars.com/api/?name=' + (c.userName) + '&background=1e1e1e&color=fff'" />
             </ion-avatar>
             <ion-label>
-              <h3>{{ c.userName || c.userEmail || 'Pengguna tidak diketahui' }}</h3>
+              <h3>{{ c.userName }}</h3>
               <p>{{ c.text }}</p>
-              <ion-note>{{ c.date | date:'medium' }}</ion-note>
+              <ion-note>{{ c.date | date:'medium' }} </ion-note>
             </ion-label>
-            <ion-button fill="clear" color="danger" (click)="deleteComment(i)" slot="end">
+            <ion-button fill="clear" color="danger" (click)="deleteComment(c.komenID)" slot="end">
               <ion-icon name="trash-outline"></ion-icon>
             </ion-button>
           </ion-item>

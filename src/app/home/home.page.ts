@@ -4,7 +4,7 @@ import {
 } from '../services/beritaservice.service';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -16,13 +16,14 @@ export class HomePage {
   constructor(
     private route: ActivatedRoute,
     public beritaservice: BeritaserviceService, //jangan ditanya kenapa begitu, tp emg begini dr ionicnya :v
-    private alertController: AlertController
+    private alertController: AlertController,
+    private toastController: ToastController
   ) {}
   berita: any;
   jenisTampilan: any;
-  beritaDicari: string = '';
-  semuaBerita: any[] = [];
-  hasilPencarian: any[] = [];
+  beritaDicari: string = "";
+  semuaBerita: Berita[] = [];
+  hasilPencarian: Berita[] = [];
   categories: any[] = [];
 
   // untuk fitur search
@@ -34,7 +35,7 @@ export class HomePage {
       this.hasilPencarian = [...this.semuaBerita];
     } else {
       this.hasilPencarian = this.semuaBerita.filter((berita) =>
-        berita.judulBerita.toLowerCase().includes(lowerKeyword)
+        berita.judul.toLowerCase().includes(lowerKeyword)
       );
     }
   }
@@ -78,30 +79,6 @@ export class HomePage {
       }
     });
   }
-  SimpanKategoriBaru(nama: string) {
-    // Panggil service untuk POST ke PHP
-    this.beritaservice.addKategori(nama).subscribe((res: any) => {
-      if (res.result === 'OK') {
-        // Refresh list kategori agar kategori baru muncul di segment
-        this.loadCategories();
-      } else {
-        console.error('Gagal menambah kategori');
-      }
-    });
-  }
-  prosesHapusKategori(id: any) {
-    // Pastikan Anda sudah membuat fungsi deleteKategori di beritaservice.service.ts
-    this.beritaservice.deleteKategori(id).subscribe((res: any) => {
-      if (res.result === 'OK') {
-        alert('Kategori berhasil dihapus');
-        this.loadCategories(); // Refresh tab agar kategori yang dihapus hilang
-        this.loadAllBerita(); // Reset tampilan ke "Semua"
-        this.jenisTampilan = 0;
-      } else {
-        alert('Gagal menghapus: ' + res.message);
-      }
-    });
-  }
 
   ngOnInit() {
     this.loadCategories();
@@ -128,7 +105,16 @@ export class HomePage {
           text: 'Simpan',
           handler: (data) => {
             if (data.nama_kategori) {
-              this.SimpanKategoriBaru(data.nama_kategori);
+              this.beritaservice
+                .addKategori(data.nama_kategori)
+                .subscribe((res: any) => {
+                  if (res.result === 'OK') {
+                    // Refresh list kategori agar kategori baru muncul di segment
+                    this.loadCategories();
+                  } else {
+                    console.error('Gagal menambah kategori');
+                  }
+                });
             }
           },
         },
@@ -156,7 +142,18 @@ export class HomePage {
           text: 'Hapus',
           handler: (idTerpilih) => {
             if (idTerpilih) {
-              this.prosesHapusKategori(idTerpilih);
+              this.beritaservice
+                .deleteKategori(idTerpilih)
+                .subscribe((res: any) => {
+                  if (res.result === 'OK') {
+                    this.showToast('Kategori berhasil dihapus');
+                    this.loadCategories(); // Refresh tab agar kategori yang dihapus hilang
+                    this.loadAllBerita(); // Reset tampilan ke "Semua"
+                    this.jenisTampilan = 0;
+                  } else {
+                    this.showToast('Gagal menghapus: ' + res.message);
+                  }
+                });
             }
           },
         },
@@ -188,5 +185,14 @@ export class HomePage {
       ],
     });
     await alert.present();
+  }
+
+  async showToast(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+      position: 'bottom',
+    });
+    await toast.present();
   }
 }
